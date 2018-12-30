@@ -23,6 +23,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.media.AudioManager
 import android.net.Uri
+import android.net.wifi.WifiManager
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
@@ -83,6 +84,16 @@ class MusicService : androidx.media.MediaBrowserServiceCompat() {
             .setContentType(C.CONTENT_TYPE_MUSIC)
             .setUsage(C.USAGE_MEDIA)
             .build()
+    // Create the Wifi lock (this does not acquire the lock, this just creates it)
+    var wifiLock: WifiManager.WifiLock? = null
+
+    private fun stayAwake(awake: Boolean) {
+        if (wifiLock != null && !wifiLock!!.isHeld()) {
+            wifiLock!!.acquire()
+        } else if (!awake && wifiLock!!.isHeld) {
+            wifiLock!!.release()
+        }
+    }
 
     // Wrap a SimpleExoPlayer with a decorator to handle audio focus for us.
     private val exoPlayer: ExoPlayer by lazy {
@@ -127,6 +138,9 @@ class MusicService : androidx.media.MediaBrowserServiceCompat() {
 
         becomingNoisyReceiver =
                 BecomingNoisyReceiver(context = this, sessionToken = mediaSession.sessionToken)
+
+        wifiLock = (applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager)
+                .createWifiLock(WifiManager.WIFI_MODE_FULL, "mcScPAmpLock")
 
         mediaSource = JsonSource(context = this, source = remoteJsonSource)
 
@@ -285,6 +299,7 @@ class MusicService : androidx.media.MediaBrowserServiceCompat() {
                 PlaybackStateCompat.STATE_BUFFERING,
                 PlaybackStateCompat.STATE_PLAYING -> {
                     becomingNoisyReceiver.register()
+                    stayAwake(true)
 
                     /**
                      * This may look strange, but the documentation for [Service.startForeground]
@@ -301,6 +316,7 @@ class MusicService : androidx.media.MediaBrowserServiceCompat() {
                 }
                 else -> {
                     becomingNoisyReceiver.unregister()
+                    stayAwake(false)
 
                     if (isForegroundService) {
                         stopForeground(false)
@@ -368,6 +384,8 @@ private class BecomingNoisyReceiver(private val context: Context,
             controller.transportControls.pause()
         }
     }
+
 }
+
 
 private const val UAMP_USER_AGENT = "uamp.next"
