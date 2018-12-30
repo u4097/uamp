@@ -36,4 +36,16 @@
         <signature name=\"%1$s\" package=\"%2$s\">\n\t<key>%3$s</key>\n</signature>\n
         ]]>
     </string>
+
+    <string-array name="channel_data_streams">
+        <item>http://playlist.rr.ru/cur_playing/dfm/cur_playing.json</item>
+        <item>http://playlist.rr.ru/cur_playing/station/ST01.json</item>
+        <item>http://playlist.rr.ru/cur_playing/station/st18.json</item>
+        <item>http://playlist.rr.ru/cur_playing/station/ST24.json</item>
+        <item>http://playlist.rr.ru/cur_playing/station/ST03.json</item>
+        <item>http://playlist.rr.ru/cur_playing/station/ST07.json</item>
+        <item>http://playlist.rr.ru/cur_playing/station/ST16.json</item>
+        <item>http://playlist.rr.ru/cur_playing/station/ST05.json</item>
+    </string-array>
+
 </resources>

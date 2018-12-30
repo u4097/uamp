@@ -162,7 +162,7 @@ fun MediaMetadataCompat.Builder.from(channel: Item): MediaMetadataCompat.Builder
     artist = channel.description // channel description
     duration = 0
     genre = "genre"
-    mediaUri = "https://dfm.hostingradio.ru/dfm96.aacp"
+    mediaUri = channel.streamUrl
     albumArtUri = "http://dfm.ru" + channel.logoPath
     trackNumber = 0
     trackCount = 0
