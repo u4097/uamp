@@ -162,7 +162,7 @@ fun MediaMetadataCompat.Builder.from(channel: Item): MediaMetadataCompat.Builder
     artist = channel.description // channel description
     duration = 0
     genre = "genre"
-    mediaUri = "https://storage.googleapis.com/uamp/The_Kyoto_Connection_-_Wake_Up/01_-_Intro_-_The_Way_Of_Waking_Up_feat_Alan_Watts.mp3"
+    mediaUri = "https://dfm.hostingradio.ru/dfm96.aacp"
     albumArtUri = "http://dfm.ru" + channel.logoPath
     trackNumber = 0
     trackCount = 0
