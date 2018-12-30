@@ -33,6 +33,7 @@ import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.core.app.NotificationManagerCompat
 import androidx.media.MediaBrowserServiceCompat
 import rmg.android.Dfm.media.R
@@ -90,7 +91,9 @@ class MusicService : androidx.media.MediaBrowserServiceCompat() {
     private fun stayAwake(awake: Boolean) {
         if (wifiLock != null && !wifiLock!!.isHeld()) {
             wifiLock!!.acquire()
+            Log.d("WIFI","WiFi is acquired.")
         } else if (!awake && wifiLock!!.isHeld) {
+            Log.d("WIFI","WiFi is release.")
             wifiLock!!.release()
         }
     }
@@ -179,6 +182,7 @@ class MusicService : androidx.media.MediaBrowserServiceCompat() {
          * itself as a foreground service, and will then call [stopSelf].
          */
         exoPlayer.stop(true)
+        stayAwake(false)
     }
 
     override fun onDestroy() {
