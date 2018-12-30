@@ -157,9 +157,9 @@ fun MediaMetadataCompat.Builder.from(channel: Item): MediaMetadataCompat.Builder
 //    val durationMs = TimeUnit.SECONDS.toMillis(channel.duration)
 
     id = channel.id
-    title = channel.name
-    artist = channel.name
-    album = channel.name
+    title = "title"
+    album = channel.name // channel name
+    artist = channel.description // channel description
     duration = 90
     genre = "genre"
     mediaUri = channel.apiUrl
@@ -170,8 +170,8 @@ fun MediaMetadataCompat.Builder.from(channel: Item): MediaMetadataCompat.Builder
 
     // To make things easier for *displaying* these, set the display properties as well.
     displayTitle = channel.name
-    displaySubtitle = "subtitle"
-    displayDescription = channel.name
+    displaySubtitle = channel.description
+    displayDescription = "displayDescription"
     displayIconUri = "displayUrl"
 
     // Add downloadStatus to force the creation of an "extras" bundle in the resulting
