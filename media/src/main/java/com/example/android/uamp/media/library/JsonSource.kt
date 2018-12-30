@@ -27,29 +27,9 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.example.android.uamp.media.R
-import com.example.android.uamp.media.extensions.album
-import com.example.android.uamp.media.extensions.albumArt
-import com.example.android.uamp.media.extensions.albumArtUri
-import com.example.android.uamp.media.extensions.artist
-import com.example.android.uamp.media.extensions.displayDescription
-import com.example.android.uamp.media.extensions.displayIconUri
-import com.example.android.uamp.media.extensions.displaySubtitle
-import com.example.android.uamp.media.extensions.displayTitle
-import com.example.android.uamp.media.extensions.downloadStatus
-import com.example.android.uamp.media.extensions.duration
-import com.example.android.uamp.media.extensions.flag
-import com.example.android.uamp.media.extensions.genre
-import com.example.android.uamp.media.extensions.id
-import com.example.android.uamp.media.extensions.mediaUri
-import com.example.android.uamp.media.extensions.title
-import com.example.android.uamp.media.extensions.trackCount
-import com.example.android.uamp.media.extensions.trackNumber
+import com.example.android.uamp.media.extensions.*
 import com.google.gson.Gson
-import java.io.BufferedReader
 import java.io.IOException
-import java.io.InputStreamReader
-import java.net.URL
-import java.util.concurrent.TimeUnit
 
 /**
  * Source of [MediaMetadataCompat] objects created from a basic JSON stream.
@@ -59,14 +39,14 @@ import java.util.concurrent.TimeUnit
  */
 class JsonSource(val context: Context, source: Uri) : AbstractMusicSource() {
     private var catalog: List<MediaMetadataCompat> = emptyList()
-    private var channels: ChannelCatalog
+
+    val json: String
 
     init {
         state = STATE_INITIALIZING
-        val json = loadJSONFromAsset()
-        channels = Gson().fromJson<ChannelCatalog>(json, ChannelCatalog::class.java)
+        json = loadJSONFromAsset()
 
-        UpdateCatalogTask(Glide.with(context)) { mediaItems ->
+        UpdateCatalogTask(Glide.with(context), json) { mediaItems ->
             catalog = mediaItems
             state = STATE_INITIALIZED
         }.execute(source)
@@ -93,45 +73,12 @@ class JsonSource(val context: Context, source: Uri) : AbstractMusicSource() {
 
 }
 
-fun getChannels(cannels: ChannelCatalog) {
-    val mediaItems = ArrayList<MediaMetadataCompat>()
-
-    // Get the base URI to fix up relative references later.
-    val baseUri = "http://dfm.ru"
-
-/*    mediaItems += channels.music.map { song ->
-        // The JSON may have paths that are relative to the source of the JSON
-        // itself. We need to fix them up here to turn them into absolute paths.
-        if (!song.source.startsWith(catalogUri.scheme)) {
-            song.source = baseUri + song.source
-        }
-        if (!song.image.startsWith(catalogUri.scheme)) {
-            song.image = baseUri + song.image
-        }
-
-        // Block on downloading artwork.
-        val art = glide.applyDefaultRequestOptions(glideOptions)
-                .asBitmap()
-                .load(song.image)
-                .submit(NOTIFICATION_LARGE_ICON_SIZE, NOTIFICATION_LARGE_ICON_SIZE)
-                .get()
-
-        MediaMetadataCompat.Builder()
-                .from(song)
-                .apply {
-                    albumArt = art
-                }
-                .build()
-    }.toList()*/
-
-}
-
 
 /**
  * Task to connect to remote URIs and download/process JSON files that correspond to
  * [MediaMetadataCompat] objects.
  */
-private class UpdateCatalogTask(val glide: RequestManager,
+private class UpdateCatalogTask(val glide: RequestManager, val json: String,
                                 val listener: (List<MediaMetadataCompat>) -> Unit) :
         AsyncTask<Uri, Void, List<MediaMetadataCompat>>() {
 
@@ -139,33 +86,33 @@ private class UpdateCatalogTask(val glide: RequestManager,
         val mediaItems = ArrayList<MediaMetadataCompat>()
 
         params.forEach { catalogUri ->
-            val musicCat = tryDownloadJson(catalogUri)
+            val musicCat = tryDownloadJson(catalogUri, json)
 
             // Get the base URI to fix up relative references later.
             val baseUri = catalogUri.toString().removeSuffix(catalogUri.lastPathSegment)
 
-            mediaItems += musicCat.music.map { song ->
+            mediaItems += musicCat.items.map { channel ->
                 // The JSON may have paths that are relative to the source of the JSON
                 // itself. We need to fix them up here to turn them into absolute paths.
-                if (!song.source.startsWith(catalogUri.scheme)) {
+/*                if (!song.source.startsWith(catalogUri.scheme)) {
                     song.source = baseUri + song.source
                 }
                 if (!song.image.startsWith(catalogUri.scheme)) {
                     song.image = baseUri + song.image
-                }
+                }*/
 
                 // Block on downloading artwork.
-                val art = glide.applyDefaultRequestOptions(glideOptions)
+/*                val art = glide.applyDefaultRequestOptions(glideOptions)
                         .asBitmap()
-                        .load(song.image)
+                        .load(channel.logoPath)
                         .submit(NOTIFICATION_LARGE_ICON_SIZE, NOTIFICATION_LARGE_ICON_SIZE)
-                        .get()
+                        .get()*/
 
                 MediaMetadataCompat.Builder()
-                        .from(song)
-                        .apply {
+                        .from(channel)
+/*                        .apply {
                             albumArt = art
-                        }
+                        }*/
                         .build()
             }.toList()
         }
@@ -184,13 +131,16 @@ private class UpdateCatalogTask(val glide: RequestManager,
      * @param catalogUri URI to attempt to download the catalog form.
      * @return The catalog downloaded, or an empty catalog if an error occurred.
      */
-    private fun tryDownloadJson(catalogUri: Uri) =
+    private fun tryDownloadJson(catalogUri: Uri, json: String): ChannelCatalog =
             try {
-                val catalogConn = URL(catalogUri.toString())
+                Gson().fromJson<ChannelCatalog>(json, ChannelCatalog::class.java)
+
+/*                val catalogConn = URL(catalogUri.toString())
                 val reader = BufferedReader(InputStreamReader(catalogConn.openStream()))
-                Gson().fromJson<JsonCatalog>(reader, JsonCatalog::class.java)
+                Gson().fromJson<JsonCatalog>(reader, JsonCatalog::class.java)*/
+
             } catch (ioEx: IOException) {
-                JsonCatalog()
+                ChannelCatalog()
             }
 }
 
@@ -198,28 +148,28 @@ private class UpdateCatalogTask(val glide: RequestManager,
  * Extension method for [MediaMetadataCompat.Builder] to set the fields from
  * our JSON constructed object (to make the code a bit easier to see).
  */
-fun MediaMetadataCompat.Builder.from(jsonMusic: JsonMusic): MediaMetadataCompat.Builder {
+fun MediaMetadataCompat.Builder.from(channel: Item): MediaMetadataCompat.Builder {
     // The duration from the JSON is given in seconds, but the rest of the code works in
     // milliseconds. Here's where we convert to the proper units.
-    val durationMs = TimeUnit.SECONDS.toMillis(jsonMusic.duration)
+//    val durationMs = TimeUnit.SECONDS.toMillis(channel.duration)
 
-    id = jsonMusic.id
-    title = jsonMusic.title
-    artist = jsonMusic.artist
-    album = jsonMusic.album
-    duration = durationMs
-    genre = jsonMusic.genre
-    mediaUri = jsonMusic.source
-    albumArtUri = jsonMusic.image
-    trackNumber = jsonMusic.trackNumber
-    trackCount = jsonMusic.totalTrackCount
+    id = channel.id
+    title = channel.name
+    artist = ""
+    album = ""
+    duration = 0
+    genre = ""
+    mediaUri = channel.apiUrl
+    albumArtUri = ""
+    trackNumber = 0
+    trackCount = 0
     flag = MediaItem.FLAG_PLAYABLE
 
     // To make things easier for *displaying* these, set the display properties as well.
-    displayTitle = jsonMusic.title
-    displaySubtitle = jsonMusic.artist
-    displayDescription = jsonMusic.album
-    displayIconUri = jsonMusic.image
+    displayTitle = channel.name
+    displaySubtitle = ""
+    displayDescription = ""
+    displayIconUri = ""
 
     // Add downloadStatus to force the creation of an "extras" bundle in the resulting
     // MediaMetadataCompat object. This is needed to send accurate metadata to the
