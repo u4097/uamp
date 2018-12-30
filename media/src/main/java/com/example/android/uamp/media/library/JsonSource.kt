@@ -57,11 +57,14 @@ import java.util.concurrent.TimeUnit
  * The definition of the JSON is specified in the docs of [JsonMusic] in this file,
  * which is the object representation of it.
  */
-class JsonSource(context: Context, source: Uri) : AbstractMusicSource() {
+class JsonSource(val context: Context, source: Uri) : AbstractMusicSource() {
     private var catalog: List<MediaMetadataCompat> = emptyList()
+    private var channels: ChannelCatalog
 
     init {
         state = STATE_INITIALIZING
+        val json = loadJSONFromAsset()
+         channels = Gson().fromJson<ChannelCatalog>(json, ChannelCatalog::class.java)
 
         UpdateCatalogTask(Glide.with(context)) { mediaItems ->
             catalog = mediaItems
@@ -70,6 +73,24 @@ class JsonSource(context: Context, source: Uri) : AbstractMusicSource() {
     }
 
     override fun iterator(): Iterator<MediaMetadataCompat> = catalog.iterator()
+
+    private fun loadJSONFromAsset(): String {
+        var json: String? = null
+        try {
+            val file = context.assets.open("item.json")
+            val size = file.available()
+            val buffer = ByteArray(size)
+            file.read(buffer)
+            file.close()
+            json = String(buffer)
+        } catch (ex: IOException) {
+            ex.printStackTrace()
+            return ""
+        }
+
+        return json
+    }
+
 }
 
 /**
