@@ -64,7 +64,7 @@ class JsonSource(val context: Context, source: Uri) : AbstractMusicSource() {
     init {
         state = STATE_INITIALIZING
         val json = loadJSONFromAsset()
-         channels = Gson().fromJson<ChannelCatalog>(json, ChannelCatalog::class.java)
+        channels = Gson().fromJson<ChannelCatalog>(json, ChannelCatalog::class.java)
 
         UpdateCatalogTask(Glide.with(context)) { mediaItems ->
             catalog = mediaItems
@@ -92,6 +92,40 @@ class JsonSource(val context: Context, source: Uri) : AbstractMusicSource() {
     }
 
 }
+
+fun getChannels(cannels: ChannelCatalog) {
+    val mediaItems = ArrayList<MediaMetadataCompat>()
+
+    // Get the base URI to fix up relative references later.
+    val baseUri = "http://dfm.ru"
+
+/*    mediaItems += channels.music.map { song ->
+        // The JSON may have paths that are relative to the source of the JSON
+        // itself. We need to fix them up here to turn them into absolute paths.
+        if (!song.source.startsWith(catalogUri.scheme)) {
+            song.source = baseUri + song.source
+        }
+        if (!song.image.startsWith(catalogUri.scheme)) {
+            song.image = baseUri + song.image
+        }
+
+        // Block on downloading artwork.
+        val art = glide.applyDefaultRequestOptions(glideOptions)
+                .asBitmap()
+                .load(song.image)
+                .submit(NOTIFICATION_LARGE_ICON_SIZE, NOTIFICATION_LARGE_ICON_SIZE)
+                .get()
+
+        MediaMetadataCompat.Builder()
+                .from(song)
+                .apply {
+                    albumArt = art
+                }
+                .build()
+    }.toList()*/
+
+}
+
 
 /**
  * Task to connect to remote URIs and download/process JSON files that correspond to
@@ -151,13 +185,13 @@ private class UpdateCatalogTask(val glide: RequestManager,
      * @return The catalog downloaded, or an empty catalog if an error occurred.
      */
     private fun tryDownloadJson(catalogUri: Uri) =
-        try {
-            val catalogConn = URL(catalogUri.toString())
-            val reader = BufferedReader(InputStreamReader(catalogConn.openStream()))
-            Gson().fromJson<JsonCatalog>(reader, JsonCatalog::class.java)
-        } catch (ioEx: IOException) {
-            JsonCatalog()
-        }
+            try {
+                val catalogConn = URL(catalogUri.toString())
+                val reader = BufferedReader(InputStreamReader(catalogConn.openStream()))
+                Gson().fromJson<JsonCatalog>(reader, JsonCatalog::class.java)
+            } catch (ioEx: IOException) {
+                JsonCatalog()
+            }
 }
 
 /**
@@ -203,6 +237,14 @@ class JsonCatalog {
     var music: List<JsonMusic> = ArrayList()
 }
 
+class ChannelCatalog {
+    var items: List<Item> = ArrayList()
+    var pages: Int = 0
+    var page: Int = 0
+    var perPage: Int = 0
+    var total: Int = 0
+}
+
 /**
  * An individual piece of music included in our JSON catalog.
  * The format from the server is as specified:
@@ -246,6 +288,19 @@ class JsonMusic {
     var totalTrackCount: Long = 0
     var duration: Long = -1
     var site: String = ""
+}
+
+class Item {
+    var logoPath: String = "http//dfm.ru"
+    var name: String = "channel name"
+    var apiUrl: String = "api url"
+    var id: String = "1"
+    var order: Int = 0
+    var lightText: Boolean = false
+    var logoId: String = "logo id"
+    var description: String = "description"
+    var streamUrl: String = "stream url"
+
 }
 
 private const val NOTIFICATION_LARGE_ICON_SIZE = 144 // px
