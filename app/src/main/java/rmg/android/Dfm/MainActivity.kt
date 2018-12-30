@@ -25,7 +25,7 @@ import rmg.android.Dfm.media.MusicService
 import rmg.android.Dfm.utils.Event
 import rmg.android.Dfm.utils.InjectorUtils
 import rmg.android.Dfm.viewmodels.MainActivityViewModel
-import com.example.android.uamp.R
+import rmg.android.Dfm.R
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: MainActivityViewModel

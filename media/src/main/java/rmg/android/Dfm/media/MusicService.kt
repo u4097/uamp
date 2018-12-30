@@ -34,7 +34,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.media.MediaBrowserServiceCompat
-import com.example.android.uamp.media.R
+import rmg.android.Dfm.media.R
 import rmg.android.Dfm.media.extensions.flag
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes

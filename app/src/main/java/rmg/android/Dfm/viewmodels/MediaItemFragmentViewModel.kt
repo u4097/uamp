@@ -32,7 +32,7 @@ import rmg.android.Dfm.MediaItemData
 import rmg.android.Dfm.MediaItemFragment
 import rmg.android.Dfm.MediaSessionConnection
 import rmg.android.Dfm.NOTHING_PLAYING
-import com.example.android.uamp.R
+import rmg.android.Dfm.R
 import rmg.android.Dfm.media.extensions.id
 import rmg.android.Dfm.media.extensions.isPlaying
 

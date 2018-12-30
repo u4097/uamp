@@ -32,13 +32,13 @@ import android.support.v4.media.session.PlaybackStateCompat.ACTION_PLAY
 import android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_NEXT
 import android.support.v4.media.session.PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
 import android.support.v4.media.session.PlaybackStateCompat.ACTION_STOP
-import com.example.android.uamp.media.R
+import rmg.android.Dfm.media.R
 import rmg.android.Dfm.media.extensions.isPlayEnabled
 import rmg.android.Dfm.media.extensions.isPlaying
 import rmg.android.Dfm.media.extensions.isSkipToNextEnabled
 import rmg.android.Dfm.media.extensions.isSkipToPreviousEnabled
 
-const val NOW_PLAYING_CHANNEL: String = "com.example.android.uamp.media.NOW_PLAYING"
+const val NOW_PLAYING_CHANNEL: String = "rmg.android.Dfm.media.NOW_PLAYING"
 const val NOW_PLAYING_NOTIFICATION: Int = 0xb339
 
 /**

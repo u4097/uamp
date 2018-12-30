@@ -27,7 +27,7 @@ import androidx.recyclerview.widget.RecyclerView
 import rmg.android.Dfm.utils.InjectorUtils
 import rmg.android.Dfm.viewmodels.MainActivityViewModel
 import rmg.android.Dfm.viewmodels.MediaItemFragmentViewModel
-import com.example.android.uamp.R
+import rmg.android.Dfm.R
 import kotlinx.android.synthetic.main.fragment_mediaitem_list.list
 import kotlinx.android.synthetic.main.fragment_mediaitem_list.loadingSpinner
 import kotlinx.android.synthetic.main.fragment_mediaitem_list.networkError

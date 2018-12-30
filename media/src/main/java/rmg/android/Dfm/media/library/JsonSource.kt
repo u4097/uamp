@@ -27,7 +27,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.android.uamp.media.R
+import rmg.android.Dfm.media.R
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import rmg.android.Dfm.media.extensions.*

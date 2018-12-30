@@ -25,7 +25,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import rmg.android.Dfm.MediaItemData.Companion.PLAYBACK_RES_CHANGED
-import com.example.android.uamp.R
+import rmg.android.Dfm.R
 import kotlinx.android.synthetic.main.fragment_mediaitem.view.albumbArt
 import kotlinx.android.synthetic.main.fragment_mediaitem.view.item_state
 import kotlinx.android.synthetic.main.fragment_mediaitem.view.subtitle

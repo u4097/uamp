@@ -30,8 +30,8 @@ import androidx.media.MediaBrowserServiceCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.Base64
 import android.util.Log
-import com.example.android.uamp.media.BuildConfig
-import com.example.android.uamp.media.R
+import rmg.android.Dfm.media.BuildConfig
+import rmg.android.Dfm.media.R
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.security.MessageDigest
