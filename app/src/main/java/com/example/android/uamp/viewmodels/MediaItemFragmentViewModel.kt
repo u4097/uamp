@@ -56,6 +56,7 @@ class MediaItemFragmentViewModel(private val mediaId: String,
     private val subscriptionCallback = object : SubscriptionCallback() {
         override fun onChildrenLoaded(parentId: String, children: List<MediaItem>) {
             val itemsList = children.map { child ->
+                Log.d("BS","itemData ${child.description}")
                 MediaItemData(child.mediaId!!,
                         child.description.title.toString(),
                         child.description.subtitle.toString(),
