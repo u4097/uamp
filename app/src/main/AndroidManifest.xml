@@ -16,7 +16,7 @@
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:dist="http://schemas.android.com/apk/distribution"
-          package="com.example.android.uamp">
+          package="rmg.android.Dfm">
 
     <application
         android:allowBackup="true"
