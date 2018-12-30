@@ -59,10 +59,10 @@ class MainActivityViewModel(private val mediaSessionConnection: MediaSessionConn
 
     /**
      * This method takes a [MediaItemData] and routes it depending on whether it's
-     * browsable (i.e.: it's the parent media item of a set of other media items,
+     * [browsable] (i.e.: it's the parent media item of a set of other media items,
      * such as an album), or not.
      *
-     * If the item is browsable, handle it by sending an event to the Activity to
+     * If the item is [browsable], handle it by sending an event to the Activity to
      * browse to it, otherwise play it.
      */
     fun mediaItemClicked(clickedItem: MediaItemData) {

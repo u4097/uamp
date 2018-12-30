@@ -20,7 +20,7 @@ package com.example.android.uamp.utils
  * Used as a wrapper for data that is exposed via a LiveData that represents an event.
  *
  * For more information, see:
- * https://medium.com/google-developers/livedata-with-events-ac2622673150
+ * [https://medium.com/google-developers/livedata-with-events-ac2622673150]
  */
 class Event<out T>(private val content: T) {
 
