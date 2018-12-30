@@ -163,7 +163,7 @@ fun MediaMetadataCompat.Builder.from(channel: Item): MediaMetadataCompat.Builder
     duration = 90
     genre = "genre"
     mediaUri = channel.apiUrl
-    albumArtUri = ""
+    albumArtUri = "http://dfm.ru" + channel.logoPath
     trackNumber = 1
     trackCount = 10
     flag = MediaItem.FLAG_PLAYABLE
