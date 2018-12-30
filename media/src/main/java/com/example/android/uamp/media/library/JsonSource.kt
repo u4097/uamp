@@ -160,19 +160,19 @@ fun MediaMetadataCompat.Builder.from(channel: Item): MediaMetadataCompat.Builder
     title = "title"
     album = channel.name // channel name
     artist = channel.description // channel description
-    duration = 90
+    duration = 0
     genre = "genre"
     mediaUri = channel.apiUrl
     albumArtUri = "http://dfm.ru" + channel.logoPath
-    trackNumber = 1
-    trackCount = 10
+    trackNumber = 0
+    trackCount = 0
     flag = MediaItem.FLAG_PLAYABLE
 
     // To make things easier for *displaying* these, set the display properties as well.
     displayTitle = channel.name
     displaySubtitle = channel.description
     displayDescription = "displayDescription"
-    displayIconUri = "displayUrl"
+    displayIconUri = "http://dfm.ru" + channel.logoPath  // album art url
 
     // Add downloadStatus to force the creation of an "extras" bundle in the resulting
     // MediaMetadataCompat object. This is needed to send accurate metadata to the
