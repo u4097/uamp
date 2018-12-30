@@ -22,6 +22,7 @@ import android.os.AsyncTask
 import android.support.v4.media.MediaBrowserCompat.MediaItem
 import android.support.v4.media.MediaDescriptionCompat.STATUS_NOT_DOWNLOADED
 import android.support.v4.media.MediaMetadataCompat
+import android.util.Log
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -29,6 +30,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.android.uamp.media.R
 import com.example.android.uamp.media.extensions.*
 import com.google.gson.Gson
+import com.google.gson.annotations.SerializedName
 import java.io.IOException
 
 /**
@@ -102,17 +104,18 @@ private class UpdateCatalogTask(val glide: RequestManager, val json: String,
                 }*/
 
                 // Block on downloading artwork.
-/*                val art = glide.applyDefaultRequestOptions(glideOptions)
+                Log.d("LOGO"," ${channel.logoPath}")
+                val art = glide.applyDefaultRequestOptions(glideOptions)
                         .asBitmap()
-                        .load(channel.logoPath)
+                        .load("http://dfm.ru" + channel.logoPath)
                         .submit(NOTIFICATION_LARGE_ICON_SIZE, NOTIFICATION_LARGE_ICON_SIZE)
-                        .get()*/
+                        .get()
 
                 MediaMetadataCompat.Builder()
                         .from(channel)
-/*                        .apply {
+                        .apply {
                             albumArt = art
-                        }*/
+                        }
                         .build()
             }.toList()
         }
@@ -155,21 +158,21 @@ fun MediaMetadataCompat.Builder.from(channel: Item): MediaMetadataCompat.Builder
 
     id = channel.id
     title = channel.name
-    artist = ""
-    album = ""
-    duration = 0
-    genre = ""
+    artist = channel.name
+    album = channel.name
+    duration = 90
+    genre = "genre"
     mediaUri = channel.apiUrl
     albumArtUri = ""
-    trackNumber = 0
-    trackCount = 0
+    trackNumber = 1
+    trackCount = 10
     flag = MediaItem.FLAG_PLAYABLE
 
     // To make things easier for *displaying* these, set the display properties as well.
     displayTitle = channel.name
-    displaySubtitle = ""
-    displayDescription = ""
-    displayIconUri = ""
+    displaySubtitle = "subtitle"
+    displayDescription = channel.name
+    displayIconUri = "displayUrl"
 
     // Add downloadStatus to force the creation of an "extras" bundle in the resulting
     // MediaMetadataCompat object. This is needed to send accurate metadata to the
@@ -179,6 +182,27 @@ fun MediaMetadataCompat.Builder.from(channel: Item): MediaMetadataCompat.Builder
     // Allow it to be used in the typical builder style.
     return this
 }
+
+
+/*
+id = jsonMusic.id
+    title = jsonMusic.title
+    artist = jsonMusic.artist
+    album = jsonMusic.album
+    duration = durationMs
+    genre = jsonMusic.genre
+    mediaUri = jsonMusic.source
+    albumArtUri = jsonMusic.image
+    trackNumber = jsonMusic.trackNumber
+    trackCount = jsonMusic.totalTrackCount
+    flag = MediaItem.FLAG_PLAYABLE
+
+    // To make things easier for *displaying* these, set the display properties as well.
+    displayTitle = jsonMusic.title
+    displaySubtitle = jsonMusic.artist
+    displayDescription = jsonMusic.album
+    displayIconUri = jsonMusic.image
+ */
 
 /**
  * Wrapper object for our JSON in order to be processed easily by GSON.
@@ -241,14 +265,17 @@ class JsonMusic {
 }
 
 class Item {
+    @SerializedName("logo_path")
     var logoPath: String = "http//dfm.ru"
     var name: String = "channel name"
+    @SerializedName("api_url")
     var apiUrl: String = "api url"
     var id: String = "1"
     var order: Int = 0
-    var lightText: Boolean = false
+    @SerializedName("logo_id")
     var logoId: String = "logo id"
     var description: String = "description"
+    @SerializedName("stream_url")
     var streamUrl: String = "stream url"
 
 }
