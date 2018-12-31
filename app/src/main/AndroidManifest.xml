@@ -16,7 +16,7 @@
   -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:dist="http://schemas.android.com/apk/distribution"
-          package="com.example.android.uamp">
+          package="rmg.android.Dfm">
 
     <application
         android:allowBackup="true"
@@ -30,7 +30,7 @@
         <!-- Enable instant app support -->
         <dist:module dist:instant="true" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name="rmg.android.Dfm.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
