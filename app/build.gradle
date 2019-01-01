@@ -43,6 +43,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 }
 
 dependencies {
@@ -60,4 +65,7 @@ dependencies {
     // Glide dependencies
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    //Test
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
 }

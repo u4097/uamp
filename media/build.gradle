@@ -38,6 +38,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 
 }
 
@@ -71,4 +75,5 @@ dependencies {
 
     // Testing
     androidTestImplementation "androidx.test:runner:$test_runner_version"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.0'
 }

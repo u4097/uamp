@@ -18,16 +18,12 @@ package rmg.android.Dfm.media.library
 
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.test.runner.AndroidJUnit4
 import android.support.v4.media.MediaMetadataCompat
-import rmg.android.Dfm.media.extensions.album
-import rmg.android.Dfm.media.extensions.artist
-import rmg.android.Dfm.media.extensions.genre
-import rmg.android.Dfm.media.extensions.id
-import rmg.android.Dfm.media.extensions.title
-import junit.framework.Assert
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
+import rmg.android.Dfm.media.extensions.*
 
 /**
  * A small set of Android integration tests for (primarily) [AbstractMusicSource].
