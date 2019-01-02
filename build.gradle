@@ -35,6 +35,7 @@ buildscript {
         androidx_version = '1.0.0'
         androidx_app_compat_version = '1.0.2'
         test_runner_version = '1.1.0'
+        mockito_version = '1.1:1.5.0'
     }
 
     repositories {

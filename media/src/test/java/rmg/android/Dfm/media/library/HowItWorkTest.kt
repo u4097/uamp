@@ -39,6 +39,7 @@ package rmg.android.Dfm.media.library
  *
  *  7. call subscribe  MediaBrowserCompat to listen for new MediaMetaData from onLoadChild method of MusicService
  *
+ *
  *  When MediaBrowser call connect method it call method onGetRoot from MusicService and return BROWSER_ROOT
  *
  *  After that triggers rootMediaId LiveData in MainActivityViewModel
